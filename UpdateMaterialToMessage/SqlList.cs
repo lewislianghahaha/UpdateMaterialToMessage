@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace UpdateMaterialToMessage
 {
+    //SQL
     public class SqlList
     {
 
