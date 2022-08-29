@@ -6,6 +6,8 @@ namespace UpdateMaterialToMessage
 {
     public class ButtonEvents : AbstractListPlugIn
     {
+        Generate generate=new Generate();
+
         public override void BarItemClick(BarItemClickEventArgs e)
         {
             //定义主键变量(用与收集所选中的行主键值)
@@ -23,7 +25,7 @@ namespace UpdateMaterialToMessage
                 var username = this.Context.UserName;
                 //检测需指定用户才能执行此功能
                 if (username == "易嘉涛" || username== "黄伟豪" || username== "冯洁卿" || username== "冯嘉伟" 
-                    || username== "陈容爱" || username== "冯兆华")
+                    || username== "陈容爱" || username== "冯兆华" || username=="梁嘉杰")
                 {
                     //获取列表上通过复选框勾选的记录
                     var selectedrows = this.ListView.SelectedRowsInfo;
@@ -47,15 +49,18 @@ namespace UpdateMaterialToMessage
                                 }
                             }
                         }
-
-                        //todo:执行
-                        //mesage = "";
-                        View.ShowMessage(flistid);
+                        //执行运算并返回相关结果
+                        mesage = generate.GenerateYtcRecord(flistid);
+                        View.ShowMessage(mesage != "Finish" ? "更新异常,请联系管理员" : "更新成功");
+                    }
+                    else
+                    {
+                        View.ShowErrMessage("请选择‘物料’后继续.");
                     }
                 }
                 else
                 {
-                    View.ShowErrMessage($"登录用户'{username}',没权限使用此功能,请联系管理员处理");
+                    View.ShowErrMessage($"登录用户:'{username}',没权限使用此功能,请联系管理员处理");
                 }
             }
         }
