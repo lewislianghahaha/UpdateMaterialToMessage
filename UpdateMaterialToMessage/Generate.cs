@@ -30,7 +30,6 @@ namespace UpdateMaterialToMessage
             {
                 //获取ytc_t_Cust100001临时表(插入至数据库时使用)
                 var ytctempdt = tempdt.Insertdtytc();
-
                 //获取ytc_t_Cust100001_L临时表(插入至数据库时使用)
                 var ytcltempdt = tempdt.Insertdtytc_L();
 
@@ -48,10 +47,13 @@ namespace UpdateMaterialToMessage
                     //循环执行
                     foreach (DataRow rows in matdt.Rows)
                     {
+                        //每次循环前都需将codeid自增1,为之后的插入‘供应商对应物料编码’作准备
+                        codeid++;
+
                         //循环读取matdt查询ytc_t_Cust100001是否存在--若不存在,先插入;注:无论有没有检测到有记录,跳出循环后都要将fmaterialid进行更新操作
                         var existdt = searDt.Searchytc_t_Cust100001(Convert.ToInt32(rows[0]));
                         //若不存在,收集
-                        if (existdt.Rows.Count == 0)
+                        if (Convert.ToInt32(existdt.Rows[0][0]) == 0)
                         {
                             //获取主键值
                             FID = searDt.GetKeyId(0);
@@ -61,8 +63,6 @@ namespace UpdateMaterialToMessage
                             //将相关值插入分别插入至ytctempdt 及 ytcltempdt临时表内
                             ytctempdt.Merge(InsertytcIntoTempdt(FID, Convert.ToInt32(rows[0]), code, ytctempdt));
                             ytcltempdt.Merge(InsertytcLIntoTempdt(FPKID,FID,ytcltempdt));
-                            //每次插入完临时表后都要对codeid自增;为下一个循环行准备
-                            codeid += codeid + 1;
                         }
                         //循环获取fmaterialid值(更新使用)
                         if (string.IsNullOrEmpty(fmaterialidlist))
