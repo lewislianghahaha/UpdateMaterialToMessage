@@ -24,8 +24,8 @@ namespace UpdateMaterialToMessage
                 //获取当前登录用户名称
                 var username = this.Context.UserName;
                 //检测需指定用户才能执行此功能
-                if (username == "易嘉涛" || username== "黄伟豪" || username== "冯洁卿" || username== "冯嘉伟" 
-                    || username== "陈容爱" || username== "冯兆华" /*|| username=="梁嘉杰"*/)
+                if (username == "易嘉涛" || username== "黄伟豪" || username== "冯洁卿" /*|| username== "冯嘉伟" 
+                    || username== "陈容爱" || username== "冯兆华" || username=="梁嘉杰"*/)
                 {
                     //获取列表上通过复选框勾选的记录
                     var selectedrows = this.ListView.SelectedRowsInfo;
@@ -51,7 +51,7 @@ namespace UpdateMaterialToMessage
                         }
                         //执行运算并返回相关结果
                         mesage = generate.GenerateYtcRecord(flistid);
-                        View.ShowMessage(mesage != "Finish" ? "更新异常,请联系管理员" : "更新成功");
+                        View.ShowMessage(mesage != "Finish" ? "更新异常,请联系管理员" : "更新成功,请进入'供货信息维护'进行查阅");
                     }
                     else
                     {
