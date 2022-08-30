@@ -7,7 +7,7 @@
 
         /// <summary>
         /// 根据FMATERIALID 获取适合条件的记录
-        /// 必须‘物料辅助’是‘包装材料’(571f369c14afda) 或 ‘外购辅料’(571f36db14afe2)
+        /// 必须‘物料辅助’是‘包装材料’(571f369c14afda) 或 ‘外购辅料’(571f36db14afe2) 并且审核状态为‘已审核’
         /// </summary>
         /// <param name="materiallist"></param>
         /// <returns></returns>
@@ -18,6 +18,7 @@
 							FROM dbo.T_BD_MATERIAL A
 							WHERE A.FMATERIALID IN ({materiallist})
 							AND A.F_YTC_ASSISTANT5 IN ('571f369c14afda','571f36db14afe2')
+                            AND A.FDOCUMENTSTATUS='C'
                         ";
 
             return _result;
