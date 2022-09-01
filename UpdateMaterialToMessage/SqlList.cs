@@ -14,8 +14,9 @@
         public string SearchMaterial(string materiallist)
         {
             _result = $@"
-                            SELECT A.FMATERIALID
+                            SELECT A.FMATERIALID,B.FNAME
 							FROM dbo.T_BD_MATERIAL A
+                            INNER JOIN dbo.T_BD_MATERIAL_L B ON A.FMATERIALID=B.FMATERIALID AND B.FLOCALEID=2052
 							WHERE A.FMATERIALID IN ({materiallist})
 							AND A.F_YTC_ASSISTANT5 IN ('571f369c14afda','571f36db14afe2')
                             AND A.FDOCUMENTSTATUS='C'

@@ -62,7 +62,7 @@ namespace UpdateMaterialToMessage
                             var code = "WM" + codeid;
                             //将相关值插入分别插入至ytctempdt 及 ytcltempdt临时表内
                             ytctempdt.Merge(InsertytcIntoTempdt(FID, Convert.ToInt32(rows[0]), code, ytctempdt));
-                            ytcltempdt.Merge(InsertytcLIntoTempdt(FPKID,FID,ytcltempdt));
+                            ytcltempdt.Merge(InsertytcLIntoTempdt(FPKID,FID,ytcltempdt, Convert.ToString(rows[1])));
                         }
                         //循环获取fmaterialid值(更新使用)
                         if (string.IsNullOrEmpty(fmaterialidlist))
@@ -123,14 +123,15 @@ namespace UpdateMaterialToMessage
         /// <param name="fid"></param>
         /// <param name="dt"></param>
         /// <param name="fpkid"></param>
+        /// <param name="materialname"></param>
         /// <returns></returns>
-        private DataTable InsertytcLIntoTempdt(int fpkid,int fid,DataTable dt)
+        private DataTable InsertytcLIntoTempdt(int fpkid,int fid,DataTable dt,string materialname)
         {
             var newrow = dt.NewRow();
-            newrow[0] = fpkid;     //FPKID
-            newrow[1] = fid;       //FID
-            newrow[2] = 2052;      //FLocaleID
-            newrow[3] = ' ';       //F_YTC_MULLANGTEXT
+            newrow[0] = fpkid;        //FPKID
+            newrow[1] = fid;          //FID
+            newrow[2] = 2052;         //FLocaleID
+            newrow[3] = materialname; //F_YTC_MULLANGTEXT
             dt.Rows.Add(newrow);
             return dt;
         }
