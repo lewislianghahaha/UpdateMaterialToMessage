@@ -51,7 +51,7 @@ namespace UpdateMaterialToMessage
                         }
                         //执行运算并返回相关结果
                         mesage = generate.GenerateYtcRecord(flistid);
-                        View.ShowMessage(mesage != "Finish" ? "更新异常,请联系管理员" : "更新成功,请进入'供货信息维护'进行查阅");
+                        View.ShowMessage(mesage != "Finish" ? $"更新异常,原因:{mesage}" : "更新成功,请根据物料编码进入'供货信息维护'进行查阅");
                     }
                     else
                     {

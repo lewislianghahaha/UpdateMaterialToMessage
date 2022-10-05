@@ -108,9 +108,9 @@ namespace UpdateMaterialToMessage
         /// 创建(更新)T_BAS_BILLCODES(编码规则最大编码表)中的相关记录
         /// </summary>
         /// <returns></returns>
-        public bool Get_MakeUnitKey()
+        public bool Get_MakeUnitKey(string code)
         {
-            return Generdt(sqlList.Get_MakeUnitKey());
+            return Generdt(sqlList.Get_MakeUnitKey(code));
         }
 
         /// <summary>

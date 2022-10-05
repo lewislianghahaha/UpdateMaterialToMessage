@@ -133,16 +133,16 @@
         /// 创建(更新)T_BAS_BILLCODES(编码规则最大编码表)中的相关记录-供应商对应物料编码使用
         /// </summary>
         /// <returns></returns>
-        public string Get_MakeUnitKey()
+        public string Get_MakeUnitKey(string code)
         {
             _result = $@"
-                            IF NOT EXISTS (SELECT 1 FROM T_BAS_BILLCODES WHERE (FRULEID = '56fa68b655a80e' AND FBYVALUE = N'{{{{{0}}}'))
+                            IF NOT EXISTS (SELECT 1 FROM T_BAS_BILLCODES WHERE (FRULEID = '56fa68b655a80e' AND FBYVALUE = N'{code}'))
                               BEGIN
-                                INSERT INTO T_BAS_BILLCODES SELECT ISNULL(max(fcodeid), 0) + 1, '56fa68b655a80e', N'{{{{{0}}}', 1.0000000000 FROM T_BAS_BILLCODES
+                                INSERT INTO T_BAS_BILLCODES SELECT ISNULL(max(fcodeid), 0) + 1, '56fa68b655a80e', N'{code}', 1.0000000000 FROM T_BAS_BILLCODES
                               END
                             ELSE
                               BEGIN
-                               UPDATE T_BAS_BILLCODES SET FNUMMAX = (FNUMMAX + 1.0000000000) WHERE (FRULEID = '56fa68b655a80e' AND FBYVALUE = N'{{{{{0}}}')
+                               UPDATE T_BAS_BILLCODES SET FNUMMAX = (FNUMMAX + 1.0000000000) WHERE (FRULEID = '56fa68b655a80e' AND FBYVALUE = N'{code}')
                               END;
                         ";
             return _result;

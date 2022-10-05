@@ -59,7 +59,8 @@ namespace UpdateMaterialToMessage
                             //获取 Z_ytc_t_Cust100001_L 主键值
                             FPKID = searDt.GetKeyId(1);
                             //创建(更新)T_BAS_BILLCODES(编码规则最大编码表)中的相关记录 change date:20221005
-                            searDt.Get_MakeUnitKey();
+                            var codelist = "{{{{{0}}}";
+                            searDt.Get_MakeUnitKey(codelist);
                             //获取最新的FNUMMAX值,作为‘供应商对应物料编码’使用 change date:20221005
                             codeid = searDt.SearchUnitMaxKey();
                             //组合成最新的‘供应商对应在物料编码’
