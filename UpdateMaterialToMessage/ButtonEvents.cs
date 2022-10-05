@@ -25,7 +25,7 @@ namespace UpdateMaterialToMessage
                 var username = this.Context.UserName;
                 //检测需指定用户才能执行此功能
                 if (username == "易嘉涛" || username== "黄伟豪" || username== "信息管理科" || username== "冯嘉伟" 
-                    || username== "陈容爱" /*|| username== "冯兆华" || username=="梁嘉杰"*/)
+                    || username== "陈容爱" /*|| username== "冯兆华" */|| username=="梁嘉杰")
                 {
                     //获取列表上通过复选框勾选的记录
                     var selectedrows = this.ListView.SelectedRowsInfo;

@@ -91,26 +91,26 @@
         /// 获取ytc_t_Cust100001表最新的F_YTC_TEXT‘供应商对应物料编码’值
         /// </summary>
         /// <returns></returns>
-        public string SearchMaxCode()
-        {
-            #region A
-            //SELECT 'WM' + CONVERT(NVARCHAR(500), CONVERT(INT, SUBSTRING(x.F_YTC_TEXT, 3, LEN(X.F_YTC_TEXT))) + 1)
+       // public string SearchMaxCode()
+       // {
+       //     #region A
+       //     //SELECT 'WM' + CONVERT(NVARCHAR(500), CONVERT(INT, SUBSTRING(x.F_YTC_TEXT, 3, LEN(X.F_YTC_TEXT))) + 1)
 
-            //                FROM dbo.ytc_t_Cust100001 x
+       //     //                FROM dbo.ytc_t_Cust100001 x
 
-            //                WHERE x.FID = (SELECT TOP 1 A.FID FROM dbo.ytc_t_Cust100001 a
+       //     //                WHERE x.FID = (SELECT TOP 1 A.FID FROM dbo.ytc_t_Cust100001 a
 
-            //                                        ORDER BY CONVERT(INT, SUBSTRING(A.F_YTC_TEXT, 3, LEN(A.F_YTC_TEXT))) DESC)
-            #endregion
-            _result = @"
-                            SELECT /*'WM'+CONVERT(NVARCHAR(500),*/CONVERT(INT,SUBSTRING(x.F_YTC_TEXT,3,LEN(X.F_YTC_TEXT)))/*+1)*/
-							FROM dbo.ytc_t_Cust100001 x
-							WHERE x.FID=( SELECT TOP 1 A.FID FROM dbo.ytc_t_Cust100001 a
-													ORDER BY CONVERT(INT,SUBSTRING(A.F_YTC_TEXT,3,LEN(A.F_YTC_TEXT))) DESC)
-                        ";
+       //     //                                        ORDER BY CONVERT(INT, SUBSTRING(A.F_YTC_TEXT, 3, LEN(A.F_YTC_TEXT))) DESC)
+       //     #endregion
+       //     _result = @"
+       //                     SELECT /*'WM'+CONVERT(NVARCHAR(500),*/CONVERT(INT,SUBSTRING(x.F_YTC_TEXT,3,LEN(X.F_YTC_TEXT)))/*+1)*/
+							//FROM dbo.ytc_t_Cust100001 x
+							//WHERE x.FID=( SELECT TOP 1 A.FID FROM dbo.ytc_t_Cust100001 a
+							//						ORDER BY CONVERT(INT,SUBSTRING(A.F_YTC_TEXT,3,LEN(A.F_YTC_TEXT))) DESC)
+       //                 ";
 
-            return _result;
-        }
+       //     return _result;
+       // }
 
         /// <summary>
         /// 当有物料ID在ytc_t_Cust100001表存在时,将FID更新至F_ytc_Base1内
@@ -129,5 +129,38 @@
             return _result;
         }
 
+        /// <summary>
+        /// 创建(更新)T_BAS_BILLCODES(编码规则最大编码表)中的相关记录-供应商对应物料编码使用
+        /// </summary>
+        /// <returns></returns>
+        public string Get_MakeUnitKey()
+        {
+            _result = $@"
+                            IF NOT EXISTS (SELECT 1 FROM T_BAS_BILLCODES WHERE (FRULEID = '56fa68b655a80e' AND FBYVALUE = N'{{{{{0}}}'))
+                            BEGIN
+                            INSERT INTO T_BAS_BILLCODES SELECT ISNULL(max(fcodeid), 0) + 1, '56fa68b655a80e', N'{{{{{0}}}', 1.0000000000 FROM T_BAS_BILLCODES
+                            END
+                            ELSE
+                            BEGIN
+                            UPDATE T_BAS_BILLCODES SET FNUMMAX = (FNUMMAX + 1.0000000000) WHERE (FRULEID = '56fa68b655a80e' AND FBYVALUE = N'{{{{{0}}}')
+                            END;
+                        ";
+            return _result;
+        }
+
+        /// <summary>
+        /// 获取最新的FNUMMAX值,作为‘供应商对应物料编码’使用
+        /// </summary>
+        /// <returns></returns>
+        public string SearchUnitMaxKey()
+        {
+            _result = @"
+                            SELECT right(cast(power(10,5) as varchar)+CAST(a.FNUMMAX AS int),5) FNUMMAX
+                            FROM dbo.T_BAS_BILLCODES A
+                            WHERE A.FRULEID='56fa68b655a80e'
+                            AND A.FBYVALUE='{{{{{0}}}'
+                        ";
+            return _result;
+        }
     }
 }

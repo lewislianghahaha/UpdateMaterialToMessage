@@ -34,6 +34,33 @@ namespace UpdateMaterialToMessage
         }
 
         /// <summary>
+        /// 按照指定的SQL语句执行记录并返回执行结果（true 或 false）
+        /// 作用:更新及删除
+        /// </summary>
+        /// <param name="sqlscript"></param>
+        /// <returns></returns>
+        public bool Generdt(string sqlscript)
+        {
+            var result = true;
+            try
+            {
+                var sqlcon = conDb.GetK3CloudConn();
+                using (sqlcon)
+                {
+                    sqlcon.Open();
+                    var sqlCommand = new SqlCommand(sqlscript, sqlcon);
+                    sqlCommand.ExecuteNonQuery();
+                    sqlcon.Close();
+                }
+            }
+            catch (Exception)
+            {
+                result = false;
+            }
+            return result;
+        }
+
+        /// <summary>
         /// 根据FMATERIALID 获取适合条件的记录
         /// 必须‘物料辅助’是‘包装材料’(571f369c14afda) 或 ‘外购辅料’(571f36db14afe2)
         /// </summary>
@@ -71,10 +98,31 @@ namespace UpdateMaterialToMessage
         /// 获取ytc_t_Cust100001表最新的F_YTC_TEXT‘供应商对应物料编码’值
         /// </summary>
         /// <returns></returns>
-        public int SearchMaxCode()
+        //public int SearchMaxCode()
+        //{
+        //    var value = Convert.ToInt32(UseSqlSearchIntoDt(sqlList.SearchMaxCode()).Rows[0][0]);
+        //    return value;
+        //}
+
+        /// <summary>
+        /// 创建(更新)T_BAS_BILLCODES(编码规则最大编码表)中的相关记录
+        /// </summary>
+        /// <returns></returns>
+        public bool Get_MakeUnitKey()
         {
-            var value = Convert.ToInt32(UseSqlSearchIntoDt(sqlList.SearchMaxCode()).Rows[0][0]);
+            var sqlscript = sqlList.Get_MakeUnitKey();
+            return Generdt(sqlscript);
+        }
+
+        /// <summary>
+        /// 获取最新的FNUMMAX值,作为‘供应商对应物料编码’使用
+        /// </summary>
+        /// <returns></returns>
+        public string SearchUnitMaxKey()
+        {
+            var value = Convert.ToString(UseSqlSearchIntoDt(sqlList.SearchUnitMaxKey()).Rows[0][0]);
             return value;
         }
+
     }
 }

@@ -23,7 +23,7 @@ namespace UpdateMaterialToMessage
             var result = "Finish";
             var FID = 0;
             var FPKID = 0;
-            var codeid = 0;
+            var codeid = string.Empty;
             var fmaterialidlist = string.Empty;
 
             try
@@ -34,7 +34,7 @@ namespace UpdateMaterialToMessage
                 var ytcltempdt = tempdt.Insertdtytc_L();
 
                 //获取最大‘供应商物料编码’值
-                codeid = searDt.SearchMaxCode();
+                //codeid = searDt.SearchMaxCode();
                 //根据获取的materialid查询符合条件的相关值
                 var matdt = searDt.SearchMaterial(materiallist).Copy();
 
@@ -48,8 +48,7 @@ namespace UpdateMaterialToMessage
                     foreach (DataRow rows in matdt.Rows)
                     {
                         //每次循环前都需将codeid自增1,为之后的插入‘供应商对应物料编码’作准备
-                        codeid++;
-
+                        //codeid++;
                         //循环读取matdt查询ytc_t_Cust100001是否存在--若不存在,先插入;注:无论有没有检测到有记录,跳出循环后都要将fmaterialid进行更新操作
                         var existdt = searDt.Searchytc_t_Cust100001(Convert.ToInt32(rows[0]));
                         //若不存在,收集
@@ -58,8 +57,13 @@ namespace UpdateMaterialToMessage
                             //获取主键值
                             FID = searDt.GetKeyId(0);
                             FPKID = searDt.GetKeyId(1);
-
+                            //创建(更新)T_BAS_BILLCODES(编码规则最大编码表)中的相关记录 change date:20221005
+                            searDt.Get_MakeUnitKey();
+                            //获取最新的FNUMMAX值,作为‘供应商对应物料编码’使用 change date:20221005
+                            codeid = searDt.SearchUnitMaxKey();
+                            //组合成最新的‘供应商对应在物料编码’
                             var code = "WM" + codeid;
+
                             //将相关值插入分别插入至ytctempdt 及 ytcltempdt临时表内
                             ytctempdt.Merge(InsertytcIntoTempdt(FID, Convert.ToInt32(rows[0]), code, ytctempdt));
                             ytcltempdt.Merge(InsertytcLIntoTempdt(FPKID,FID,ytcltempdt, Convert.ToString(rows[1])));
