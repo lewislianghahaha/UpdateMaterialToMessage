@@ -54,8 +54,9 @@ namespace UpdateMaterialToMessage
                         //若不存在,收集
                         if (Convert.ToInt32(existdt.Rows[0][0]) == 0)
                         {
-                            //获取主键值
+                            //获取 Z_ytc_t_Cust100001 主键值
                             FID = searDt.GetKeyId(0);
+                            //获取 Z_ytc_t_Cust100001_L 主键值
                             FPKID = searDt.GetKeyId(1);
                             //创建(更新)T_BAS_BILLCODES(编码规则最大编码表)中的相关记录 change date:20221005
                             searDt.Get_MakeUnitKey();

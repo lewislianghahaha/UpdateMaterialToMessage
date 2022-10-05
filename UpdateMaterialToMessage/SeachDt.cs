@@ -110,8 +110,7 @@ namespace UpdateMaterialToMessage
         /// <returns></returns>
         public bool Get_MakeUnitKey()
         {
-            var sqlscript = sqlList.Get_MakeUnitKey();
-            return Generdt(sqlscript);
+            return Generdt(sqlList.Get_MakeUnitKey());
         }
 
         /// <summary>

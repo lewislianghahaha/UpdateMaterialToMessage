@@ -137,13 +137,13 @@
         {
             _result = $@"
                             IF NOT EXISTS (SELECT 1 FROM T_BAS_BILLCODES WHERE (FRULEID = '56fa68b655a80e' AND FBYVALUE = N'{{{{{0}}}'))
-                            BEGIN
-                            INSERT INTO T_BAS_BILLCODES SELECT ISNULL(max(fcodeid), 0) + 1, '56fa68b655a80e', N'{{{{{0}}}', 1.0000000000 FROM T_BAS_BILLCODES
-                            END
+                              BEGIN
+                                INSERT INTO T_BAS_BILLCODES SELECT ISNULL(max(fcodeid), 0) + 1, '56fa68b655a80e', N'{{{{{0}}}', 1.0000000000 FROM T_BAS_BILLCODES
+                              END
                             ELSE
-                            BEGIN
-                            UPDATE T_BAS_BILLCODES SET FNUMMAX = (FNUMMAX + 1.0000000000) WHERE (FRULEID = '56fa68b655a80e' AND FBYVALUE = N'{{{{{0}}}')
-                            END;
+                              BEGIN
+                               UPDATE T_BAS_BILLCODES SET FNUMMAX = (FNUMMAX + 1.0000000000) WHERE (FRULEID = '56fa68b655a80e' AND FBYVALUE = N'{{{{{0}}}')
+                              END;
                         ";
             return _result;
         }
