@@ -138,7 +138,7 @@
             _result = $@"
                             IF NOT EXISTS (SELECT 1 FROM T_BAS_BILLCODES WHERE (FRULEID = '56fa68b655a80e' AND FBYVALUE = N'{code}'))
                               BEGIN
-                                INSERT INTO T_BAS_BILLCODES SELECT ISNULL(max(fcodeid), 0) + 1, '56fa68b655a80e', N'{code}', 1.0000000000 FROM T_BAS_BILLCODES
+                                INSERT INTO T_BAS_BILLCODES SELECT ISNULL(max(fcodeid), 0) + 1, '56fa68b655a80e', N'{code}', 1.0000000000,NULL,'' FROM T_BAS_BILLCODES
                               END
                             ELSE
                               BEGIN
